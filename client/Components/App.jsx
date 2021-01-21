@@ -12,6 +12,7 @@ import {
 } from "@material-ui/pickers";
 // import DateFnsUtils from "@material-ui/pickers/adapter/date-fns";
 import DateFnsUtils from '@date-io/date-fns';
+import '../styles/styles.css';
 
 function App() {
   const [date, setDate] = useState(['x', '1/11/2021', '1/12/2021', '1/13/2021', '1/14/2021', '1/15/2021', '1/16/2021']);
@@ -40,30 +41,42 @@ function App() {
             current,
             compare
         ],
-        xFormat: '%m/%d/%Y'
     },
     'axis': {
 			'x': {
-				'type': 'timeseries',
-			}
+        'type': 'category',
+      },
+      'y': {
+        label: {
+          text: 'revenue (in $)',
+          position: "outer-middle"
+        }
+      }
 		}
   })
 
-
-
   return (
     <>
-      <div>bye</div>
+      <div className='bye'>bye</div>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <div className='DatePicker'>
           <div className='currentDatePicker'>
-            <DatePicker />
-            <div>to</div>
+            <label>current: </label>
+            <DatePicker onChange={(newDate) => {
+              let startDate = ((newDate.getMonth() > 8) ? (newDate.getMonth() + 1) : ('0' + (newDate.getMonth() + 1))) + '/' + ((newDate.getDate() > 9) ? newDate.getDate() : ('0' + newDate.getDate())) + '/' + newDate.getFullYear().toString();
+              const newDateArr = ['x'];
+              newDateArr.push(startDate);
+              console.log(newDateArr);
+              setDate(newDateArr);
+              console.log('date in date picker', date);
+            }}/>
+            <div className='transition'>to</div>
             <DatePicker />
           </div>
-          <div className='compareDateTransition'>
+          <div className='compareDatePicker'>
+          <label>compare: </label>
             <DatePicker />
-            <div>to</div>
+            <div className='transition'>to</div>
             <DatePicker />
           </div>
         </div>

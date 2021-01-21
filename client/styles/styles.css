@@ -1,0 +1,11 @@
+.currentDatePicker,
+.compareDatePicker {
+  display: flex;
+}
+label,
+.transition {
+  margin: 0 15px;
+}
+.bye {
+  font-weight: bold;
+}
