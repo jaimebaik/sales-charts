@@ -14,8 +14,10 @@ import {
 import DateFnsUtils from '@date-io/date-fns';
 import '../styles/styles.css';
 
+const initialState_date = ['x'];
+
 function App() {
-  const [date, setDate] = useState(['x', '1/11/2021', '1/12/2021', '1/13/2021', '1/14/2021', '1/15/2021', '1/16/2021']);
+  const [date, setDate] = useState(['x', '1/11/2021 1/11/2021', '1/12/2021\n1/12/2021', '1/13/2021\n1/13/2021', '1/14/2021\n1/14/2021', '1/15/2021\n1/15/2021', '1/16/2021\n1/16/2021']);
   const [current, setCurrent] = useState(['current', 30, 200, 100, 170, 150, 250]);
   const [compare, setCompare] = useState(['compare', 130, 100, 140, 35, 110, 50]);
 
@@ -28,32 +30,50 @@ function App() {
       console.log(error)
     )
   },[])
-  let chart = bb.generate({
-    bindto: '#chart',
-    interaction: {
-      enabled: false
-    },
-    data: {
-       x: 'x',
+  
+  useEffect(()=>{
+    console.log(date);
+    let chart = bb.generate({
+      bindto: '#chart',
+      interaction: {
+        enabled: false
+      },
+      data: {
+        x: 'x',
         type: bar(),
         columns: [
             date,
             current,
             compare
         ],
-    },
-    'axis': {
-			'x': {
-        'type': 'category',
       },
-      'y': {
-        label: {
-          text: 'revenue (in $)',
-          position: "outer-middle"
+      'size': {
+        height: 500
+      },
+      'padding': {
+        'top': 20,
+        'bottom': 100
+      },
+      legend: {
+        position: 'right'
+      },
+      'axis': {
+        'x': {
+          'type': 'category',
+          'tick': {
+            rotate: -45,
+            // height: 100
+          },
+        },
+        'y': {
+          label: {
+            text: 'revenue (in $)',
+            position: "outer-middle"
+          },
         }
       }
-		}
-  })
+    })
+  }, [date])
 
   return (
     <>
@@ -64,10 +84,7 @@ function App() {
             <label>current: </label>
             <DatePicker onChange={(newDate) => {
               let startDate = ((newDate.getMonth() > 8) ? (newDate.getMonth() + 1) : ('0' + (newDate.getMonth() + 1))) + '/' + ((newDate.getDate() > 9) ? newDate.getDate() : ('0' + newDate.getDate())) + '/' + newDate.getFullYear().toString();
-              const newDateArr = ['x'];
-              newDateArr.push(startDate);
-              console.log(newDateArr);
-              setDate(newDateArr);
+              setDate(['x', startDate]);
               console.log('date in date picker', date);
             }}/>
             <div className='transition'>to</div>
