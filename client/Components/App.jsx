@@ -12,25 +12,28 @@ function App() {
     .catch(error => 
       console.log(error)
     )
-      let chart = bb.generate({
+  },[])
+  let chart = bb.generate({
     bindto: "#chart",
+    interaction: {
+      enabled: false
+    },
     data: {
-        // x: 'x',
+       x: 'x',
         type: bar(),
         columns: [
-            // ['x', '1/11/2021', '1/12/2021', '1/13/2021', '1/14/2021', '1/15/2021', '1/16/2021']
-            ["data1", 30, 200, 100, 170, 150, 250],
-            ["data2", 130, 100, 140, 35, 110, 50]
+            ['x', '1/11/2021', '1/12/2021', '1/13/2021', '1/14/2021', '1/15/2021', '1/16/2021'],
+            ["current", 30, 200, 100, 170, 150, 250],
+            ["compare", 130, 100, 140, 35, 110, 50]
         ],
-        // xFormat: "%m%d%Y"
+        xFormat: "%m/%d/%Y"
     },
-  //   axis: {
-  //     x: {
-  //         type: "timeseries"
-  //     }
-  //  }
-  });
-  },[])
+    "axis": {
+			"x": {
+				"type": "timeseries",
+			}
+		}
+  })
 
   return (
     <>
