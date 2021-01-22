@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import {csv} from 'd3';
 import sampleData from '../assets/sampleData.csv';
 import bb, {bar} from 'billboard.js';
-import TextField from '@material-ui/core/TextField';
+// import TextField from '@material-ui/core/TextField';
 import {
   DatePicker,
-  DateRangePicker,
-  DateRangeDelimiter,
-  LocalizationProvider,
+  // DateRangePicker,
+  // DateRangeDelimiter,
+  // LocalizationProvider,
   MuiPickersUtilsProvider
 } from "@material-ui/pickers";
 // import DateFnsUtils from "@material-ui/pickers/adapter/date-fns";
@@ -17,20 +17,40 @@ import '../styles/styles.css';
 const initialState_date = ['x'];
 
 function App() {
-  const [date, setDate] = useState(['x', '1/11/2021 1/11/2021', '1/12/2021\n1/12/2021', '1/13/2021\n1/13/2021', '1/14/2021\n1/14/2021', '1/15/2021\n1/15/2021', '1/16/2021\n1/16/2021']);
+  //states
+  const [revenues, setRevenues] = useState([]);
+  const [currStartDate, setCurrStartDate] = useState();
+  const [currEndDate, setCurrEndDate] = useState();
+  const [compStartDate, setCompStartDate] = useState();
+  const [compEndDate, setCompEndDate] = useState();
+  const [currData, setCurrData] = useState([]);
+  const [compData, setCompData] = useState([]);
+  const [date, setDate] = useState(['x', '1/11/2021 ', '1/12/2021 1/12/2021', '1/13/2021 1/13/2021', '1/14/2021 1/14/2021', '1/15/2021 1/15/2021', '1/16/2021 1/16/2021']);
   const [current, setCurrent] = useState(['current', 30, 200, 100, 170, 150, 250]);
   const [compare, setCompare] = useState(['compare', 130, 100, 140, 35, 110, 50]);
 
-  useEffect(()=>{
+  //when the component mounts, parse through csv file to save the data in the state
+  useEffect(() => {
     csv(sampleData)
     .then(data => {
-      console.log(data);
+      // console.log(data);
+      setRevenues(() => {
+        return [data]
+      })
     })
     .catch(error => 
       console.log(error)
     )
   },[])
+
+  useEffect(()=> {
+    console.log('Current Start', currStartDate);
+    console.log('Comparison Start', compStartDate);
+    console.log('Current End', currEndDate);
+    console.log('Comparison End', compEndDate);
+  }, [currStartDate, compStartDate, currEndDate, compEndDate])
   
+  //everytime date/currData/compData state change, regenerate the chart with new data
   useEffect(()=>{
     console.log(date);
     let chart = bb.generate({
@@ -52,7 +72,7 @@ function App() {
       },
       'padding': {
         'top': 20,
-        'bottom': 100
+        'bottom': 200
       },
       legend: {
         position: 'right'
@@ -73,7 +93,7 @@ function App() {
         }
       }
     })
-  }, [date])
+  }, [date, currData, compData])
 
   return (
     <>
@@ -82,17 +102,22 @@ function App() {
         <div className='DatePicker'>
           <div className='currentDatePicker'>
             <label>current: </label>
-            <DatePicker onChange={(newDate) => {
-              let startDate = ((newDate.getMonth() > 8) ? (newDate.getMonth() + 1) : ('0' + (newDate.getMonth() + 1))) + '/' + ((newDate.getDate() > 9) ? newDate.getDate() : ('0' + newDate.getDate())) + '/' + newDate.getFullYear().toString();
-              setDate(['x', startDate]);
-              console.log('date in date picker', date);
+            <DatePicker  className='curr' value={currStartDate} onChange={(newDate)=> {
+              let startDate = ((newDate.getMonth() > 8) ? (newDate.getMonth() + 1) : ((newDate.getMonth() + 1))) + '/' + ((newDate.getDate() > 9) ? newDate.getDate() : (newDate.getDate())) + '/' + newDate.getFullYear();
+              setCurrStartDate(startDate);
             }}/>
             <div className='transition'>to</div>
-            <DatePicker />
+            <DatePicker className='curr' value={currEndDate} onChange={(newDate)=> {
+              let endDate = ((newDate.getMonth() > 8) ? (newDate.getMonth() + 1) : ((newDate.getMonth() + 1))) + '/' + ((newDate.getDate() > 9) ? newDate.getDate() : (newDate.getDate())) + '/' + newDate.getFullYear();
+              setCurrEndDate(endDate);
+            }}/>
           </div>
           <div className='compareDatePicker'>
           <label>compare: </label>
-            <DatePicker />
+            <DatePicker value={compStartDate} onChange={(newDate) => {
+              let startDate = ((newDate.getMonth() > 8) ? (newDate.getMonth() + 1) : ((newDate.getMonth() + 1))) + '/' + ((newDate.getDate() > 9) ? newDate.getDate() : (newDate.getDate())) + '/' + newDate.getFullYear();
+              setCompStartDate(startDate);
+            }}/>
             <div className='transition'>to</div>
             <DatePicker />
           </div>
