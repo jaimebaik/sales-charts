@@ -19,10 +19,10 @@ const initialState_date = ['x'];
 function App() {
   //states
   const [revenues, setRevenues] = useState([]);
-  const [currStartDate, setCurrStartDate] = useState();
-  const [currEndDate, setCurrEndDate] = useState();
-  const [compStartDate, setCompStartDate] = useState();
-  const [compEndDate, setCompEndDate] = useState();
+  const [currStartDate, setCurrStartDate] = useState(null);
+  const [currEndDate, setCurrEndDate] = useState(null);
+  const [compStartDate, setCompStartDate] = useState(null);
+  const [compEndDate, setCompEndDate] = useState(null);
   const [currData, setCurrData] = useState([]);
   const [compData, setCompData] = useState([]);
   const [date, setDate] = useState(['x', '1/11/2021 ', '1/12/2021 1/12/2021', '1/13/2021 1/13/2021', '1/14/2021 1/14/2021', '1/15/2021 1/15/2021', '1/16/2021 1/16/2021']);
@@ -75,7 +75,7 @@ function App() {
         'bottom': 200
       },
       legend: {
-        position: 'right'
+        position: 'right-center'
       },
       'axis': {
         'x': {
@@ -102,22 +102,46 @@ function App() {
         <div className='DatePicker'>
           <div className='currentDatePicker'>
             <label>current: </label>
-            <DatePicker  className='curr' value={currStartDate} onChange={(newDate)=> {
-              let startDate = ((newDate.getMonth() > 8) ? (newDate.getMonth() + 1) : ((newDate.getMonth() + 1))) + '/' + ((newDate.getDate() > 9) ? newDate.getDate() : (newDate.getDate())) + '/' + newDate.getFullYear();
-              setCurrStartDate(startDate);
-            }}/>
+            <DatePicker  
+              className='curr' 
+              minDate={new Date(2021, 0, 1)}
+              maxDate={new Date(2021, 2, 31)}
+              value={currStartDate} 
+              onChange={(newDate)=> {
+                let startDate = ((newDate.getMonth() > 8) ? (newDate.getMonth() + 1) : ((newDate.getMonth() + 1))) + '/' + ((newDate.getDate() > 9) ? newDate.getDate() : (newDate.getDate())) + '/' + newDate.getFullYear();
+                setCurrStartDate(startDate);
+              }}
+            />
             <div className='transition'>to</div>
-            <DatePicker className='curr' value={currEndDate} onChange={(newDate)=> {
-              let endDate = ((newDate.getMonth() > 8) ? (newDate.getMonth() + 1) : ((newDate.getMonth() + 1))) + '/' + ((newDate.getDate() > 9) ? newDate.getDate() : (newDate.getDate())) + '/' + newDate.getFullYear();
-              setCurrEndDate(endDate);
-            }}/>
+            <DatePicker 
+              className='curr' 
+              minDate={new Date(2021, 0, 1)}
+              maxDate={new Date(2021, 2, 31)}
+              value={currEndDate} 
+              onChange={(newDate)=> {
+                let endDate = ((newDate.getMonth() > 8) ? (newDate.getMonth() + 1) : ((newDate.getMonth() + 1))) + '/' + ((newDate.getDate() > 9) ? newDate.getDate() : (newDate.getDate())) + '/' + newDate.getFullYear();
+                setCurrEndDate(endDate);
+                let newDateArr = ['x'];
+                currStartDate
+                currEndDate
+                if(currStartDate.getMonth() === currEndDate.getMonth){
+
+                }
+              }}
+            />
           </div>
+          {(currStartDate&&currEndDate) ? <></> : <div className='red'>required to select start and end dates for current data</div>}
           <div className='compareDatePicker'>
           <label>compare: </label>
-            <DatePicker value={compStartDate} onChange={(newDate) => {
-              let startDate = ((newDate.getMonth() > 8) ? (newDate.getMonth() + 1) : ((newDate.getMonth() + 1))) + '/' + ((newDate.getDate() > 9) ? newDate.getDate() : (newDate.getDate())) + '/' + newDate.getFullYear();
-              setCompStartDate(startDate);
-            }}/>
+            <DatePicker 
+              minDate={new Date(2021, 0, 1)}
+              maxDate={currStartDate}
+              value={compStartDate} 
+              onChange={(newDate) => {
+                let startDate = ((newDate.getMonth() > 8) ? (newDate.getMonth() + 1) : ((newDate.getMonth() + 1))) + '/' + ((newDate.getDate() > 9) ? newDate.getDate() : (newDate.getDate())) + '/' + newDate.getFullYear();
+                setCompStartDate(startDate);
+              }}
+            />
             <div className='transition'>to</div>
             <DatePicker />
           </div>

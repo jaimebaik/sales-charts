@@ -6,6 +6,10 @@ label,
 .transition {
   margin: 0 15px;
 }
+.red {
+  color: red;
+  margin-left: 30px;
+}
 .bye {
   font-weight: bold;
 }
