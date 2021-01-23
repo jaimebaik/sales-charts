@@ -11,7 +11,7 @@ Use this data to draw a chart using React.js and d3.js to satisfy the following 
 - [x] The user shall be able to select two date ranges: a current date range and a comparison date range
   - [x] The current date range is required
   - [x] The comparison date range is optional
-  - [x ]You can use a library such as MUI for the date picker component
+  - [x]You can use a library such as MUI for the date picker component
 - [x] Use d3.js to chart the revenue each day over the selected date range(s)
 - [x] Enforce that the user can only select date ranges that are available in the dataset provided
 - [x] Enforce that the comparison date range is before the current date range
