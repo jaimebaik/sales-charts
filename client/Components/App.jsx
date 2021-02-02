@@ -25,7 +25,7 @@ function App() {
   const [compare, setCompare] = useState(['compare']);
 
   //restriction for comparison date
-  let yesterday = new Date(currStartDate);
+  const yesterday = new Date(currStartDate);
 
   //helper function to get range between dates, inclusive
   const getDatesBetweenDates = (startDate, endDate) => {
@@ -66,7 +66,7 @@ function App() {
       compNewRange = getDatesBetweenDates(compStartDate, compEndDate);
       setCompRange(compNewRange);
     }
-    let dateRange = ['x'];
+    const dateRange = ['x'];
     if(currNewRange){
       for(let i = 0; i < currNewRange.length; i++){
         dateRange.push(currNewRange[i]);
@@ -78,7 +78,7 @@ function App() {
   
   //everytime date/currData/compData state change, regenerate the chart with new data
   useEffect(()=>{
-    let chart = bb.generate({
+    const chart = bb.generate({
       bindto: '#chart',
       interaction: {
         enabled: false
@@ -114,7 +114,7 @@ function App() {
             text: 'revenue (in $)',
             position: "outer-middle"
           },
-          show: false
+          // show: false
         }
       }
     })
@@ -125,23 +125,19 @@ function App() {
     let i = 0;
     let j = 0;
     let k = 0;
-    let newCurr = ['current'];
-    let newComp = ['compare'];
-    console.log(compRange);
+    const newCurr = ['current'];
+    const newComp = ['compare'];
     while(i < revenues.length && j < currRange.length){
       if(revenues[i]['Date'] === currRange[j]) {
         newCurr.push(parseFloat(revenues[i]['Revenue Booked'].slice(1).replace(/\,/g, '')));
         j++;
       }
-      console.log(revenues[i]['Date'])
-      console.log(compRange[k])
       if(revenues[i]['Date'] === compRange[k]){
         newComp.push(parseFloat(revenues[i]['Revenue Booked'].slice(1).replace(/\,/g, '')));
         k++;
       }
       i++;
     }
-    console.log(newComp);
     setCurrent(newCurr);
     setCompare(newComp);
   }, [currRange, compRange])
