@@ -97,7 +97,7 @@ function App() {
       },
       'padding': {
         'top': 20,
-        'bottom': 200
+        'bottom': 200,
       },
       legend: {
         position: 'right-center'
@@ -114,6 +114,7 @@ function App() {
             text: 'revenue (in $)',
             position: "outer-middle"
           },
+          show: false
         }
       }
     })
@@ -121,28 +122,31 @@ function App() {
 
   //use the ranges to grab the correct data to be displayed
   useEffect(() => {
-    let i = 1;
+    let i = 0;
     let j = 0;
     let k = 0;
     let newCurr = ['current'];
     let newComp = ['compare'];
+    console.log(compRange);
     while(i < revenues.length && j < currRange.length){
       if(revenues[i]['Date'] === currRange[j]) {
         newCurr.push(parseFloat(revenues[i]['Revenue Booked'].slice(1).replace(/\,/g, '')));
         j++;
       }
+      console.log(revenues[i]['Date'])
+      console.log(compRange[k])
       if(revenues[i]['Date'] === compRange[k]){
         newComp.push(parseFloat(revenues[i]['Revenue Booked'].slice(1).replace(/\,/g, '')));
         k++;
       }
       i++;
     }
+    console.log(newComp);
     setCurrent(newCurr);
     setCompare(newComp);
   }, [currRange, compRange])
   return (
     <>
-      <div className='bye'>bye</div>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <div className='DatePicker'>
           <div className='currentDatePicker'>
